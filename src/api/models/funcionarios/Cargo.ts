@@ -1,4 +1,4 @@
-import { enumNivelPermissao } from "../enum/nivelPermissao";
+import { enumNivelPermissao } from "../../enum/nivelPermissao";
 
 export class Cargo {
     private _idCargo: string | null; //UUID
