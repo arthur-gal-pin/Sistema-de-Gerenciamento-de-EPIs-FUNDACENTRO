@@ -1,6 +1,6 @@
 import { enumNivelPermissao } from "../../enum/nivelPermissao";
 
-export class Cargo {
+export default class Cargo {
     private _idCargo: string | null; //UUID
     private _nomeCargo: string;
     private _nivelPermissao: enumNivelPermissao;

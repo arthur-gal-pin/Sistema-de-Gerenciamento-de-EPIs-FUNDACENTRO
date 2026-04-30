@@ -1,6 +1,6 @@
 import { enumSituacaoEmpregaticia } from "../../enum/situacaoEmpregaticia";
 
-export class Funcionario {
+export default class Funcionario {
     private _idFuncionario: string | null;
     private _idCargo: string;
     private _nomeFuncionario: string;
