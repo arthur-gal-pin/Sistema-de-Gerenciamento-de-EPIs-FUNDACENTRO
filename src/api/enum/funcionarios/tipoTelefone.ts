@@ -1,5 +1,5 @@
-export enum enumTipoTelefone {
+export enum enumTipoTelefone{
     fixo = 'fixo',
     movel = 'movel',
     trabalho = 'trabalho'
-} 
+}
