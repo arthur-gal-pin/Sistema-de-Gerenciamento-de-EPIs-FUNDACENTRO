@@ -1,4 +1,4 @@
-import { enumSituacaoEmpregaticia } from "../../enum/situacaoEmpregaticia";
+import { enumSituacaoEmpregaticia } from "../../enum/funcionarios/situacaoEmpregaticia";
 
 export default class Funcionario {
     private _idFuncionario: string | null;
@@ -32,8 +32,8 @@ export default class Funcionario {
         this._senhaHash = senhaHash;
         this._caminhoImagemPerfil = caminhoImagemPerfil;
         this._situacaoEmpregaticia = situacaoEmpregaticia;
-        this._dataCad = dataCad || null;
-        this._dataMod = dataMod || null;
+        this._dataCad = dataCad || new Date().toISOString();
+        this._dataMod = dataMod || new Date().toISOString();
     }
 
     // --- GETTERS ---
