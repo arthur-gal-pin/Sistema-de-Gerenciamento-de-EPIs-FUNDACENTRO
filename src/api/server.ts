@@ -1,0 +1,1 @@
+//Lembrar de implementar isso: await sequelize.sync({ force: false }); console.log("🚀 Tabelas sincronizadas!");
