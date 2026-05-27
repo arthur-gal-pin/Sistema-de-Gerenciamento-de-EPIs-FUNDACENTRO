@@ -1,0 +1,64 @@
+USE LaboratorioEnsaios;
+GO
+
+CREATE DATABASE LaboratorioEnsaios;
+GO
+
+USE LaboratorioEnsaios;
+GO
+
+CREATE TABLE CARGOS (
+    IdCargo UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
+    NomeCargo VARCHAR(255) NOT NULL,
+    NivelPermissao VARCHAR(50) NOT NULL, -- Ajustado de ENUM para VARCHAR compatível com SQL Server
+    DataCad DATETIME DEFAULT GETDATE(),
+	DataMod DATETIME
+);
+
+-- 2. Tabela FUNCIONARIOS
+CREATE TABLE FUNCIONARIOS (
+    IdFuncionario UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
+    FK_IdCargo UNIQUEIDENTIFIER NOT NULL,
+    NomeFuncionario VARCHAR(30) NOT NULL,
+    SobrenomeFuncionario VARCHAR(200),
+    Cpf CHAR(11) UNIQUE NOT NULL,
+    SenhaHash VARCHAR(255) NOT NULL,
+    Email VARCHAR(255) UNIQUE NOT NULL,
+    CaminhoImagemPerfil VARCHAR(255) NOT NULL,
+    SituacaoEmpregaticia VARCHAR(50) NOT NULL,
+    DataCad DATETIME DEFAULT GETDATE(),
+    DataMod DATETIME,
+    FOREIGN KEY (FK_IdCargo) REFERENCES CARGOS(IdCargo)
+);
+
+-- 3. Tabela TELEFONES
+CREATE TABLE TELEFONES (
+    IdTelefone UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
+    FK_IdFuncionario UNIQUEIDENTIFIER NOT NULL,
+    NumeroTelefone VARCHAR(255) NOT NULL,
+    TipoTelefone VARCHAR(50) NOT NULL,
+    DataCad DATETIME DEFAULT GETDATE(),
+	DataMod DATETIME,
+    FOREIGN KEY (FK_IdFuncionario) REFERENCES FUNCIONARIOS(IdFuncionario)
+);
+
+
+-- Trigger para CARGOS
+CREATE TRIGGER trg_UpdateDataMod_Cargos ON CARGOS
+AFTER UPDATE AS
+BEGIN
+    SET NOCOUNT ON;
+    UPDATE CARGOS SET DataMod = GETDATE()
+    FROM Inserted i WHERE CARGOS.IdCargo = i.IdCargo;
+END;
+GO
+
+-- Trigger para TELEFONES
+CREATE TRIGGER trg_UpdateDataMod_Telefones ON TELEFONES
+AFTER UPDATE AS
+BEGIN
+    SET NOCOUNT ON;
+    UPDATE TELEFONES SET DataMod = GETDATE()
+    FROM Inserted i WHERE TELEFONES.IdTelefone = i.IdTelefone;
+END;
+GO

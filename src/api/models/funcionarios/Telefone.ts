@@ -1,4 +1,4 @@
-import { enumTipoTelefone } from "../../enum/tipoTelefone";
+import { enumTipoTelefone } from "../../enum/funcionarios/tipoTelefone";
 
 export default class Telefone {
     private _idTelefone: string | null;

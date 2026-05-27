@@ -1,4 +1,4 @@
-import { enumSituacaoEmpregaticia } from "../../enum/situacaoEmpregaticia";
+import { enumSituacaoEmpregaticia } from "../../enum/funcionarios/situacaoEmpregaticia";
 
 export class Funcionario {
     private _idFuncionario: string | null;
