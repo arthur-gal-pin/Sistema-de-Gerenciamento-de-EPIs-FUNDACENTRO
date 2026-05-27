@@ -53,4 +53,4 @@ TelefoneMap.init(
     }
 );
 
-export { TelefoneMap };
+export { TelefoneMap, TelefoneAttributes };

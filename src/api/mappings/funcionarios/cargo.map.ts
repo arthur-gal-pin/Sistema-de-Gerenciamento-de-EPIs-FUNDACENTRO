@@ -53,4 +53,4 @@ CargoMap.init(
     }
 );
 
-export { CargoMap };
+export { CargoMap, CargoAttributes };

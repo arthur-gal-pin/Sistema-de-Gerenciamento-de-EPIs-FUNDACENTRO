@@ -90,4 +90,4 @@ FuncionarioMap.init(
     }
 );
 
-export { FuncionarioMap };
+export { FuncionarioMap, FuncionarioAttributes };
