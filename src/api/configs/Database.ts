@@ -1,34 +1,71 @@
-import sql from 'mssql';
+import { Sequelize } from 'sequelize';
+import dotenv from 'dotenv';
 
-// Configurações do Banco de Dados
-const config: sql.config = {
-    user: process.env.DB_USER || 'sa',
-    password: process.env.DB_PASSWORD || 'SuaSenhaForte123',
-    server: process.env.DB_SERVER || 'localhost', 
-    database: process.env.DB_NAME || 'EmpresaDB',
-    options: {
-        encrypt: true, // Use true se estiver a usar Azure
-        trustServerCertificate: true, // Necessário para desenvolvimento local (self-signed certs)
-        enableArithAbort: true
-    },
-    pool: {
-        max: 10, // Máximo de conexões simultâneas no pool
-        min: 0,
-        idleTimeoutMillis: 30000 // Tempo para fechar conexões inativas
+dotenv.config();
+
+const requiredEnv = ['DB_HOST', 'DB_USER', 'DB_PASSWORD', 'DB_DATABASE'];
+const missingEnv = requiredEnv.filter(key => !process.env[key]);
+
+if (missingEnv.length > 0) {
+    console.error("Variáveis de ambiente ausentes:", missingEnv);
+    throw new Error("Faltando variáveis críticas no arquivo .env para o SQL Server.");
+}
+
+class Database {
+    private static instance: Database | null = null;
+    private sequelize!: Sequelize;
+
+    private constructor() {
+        // Singleton
     }
-};
 
+    private connect() {
+        try {
+            this.sequelize = new Sequelize(
+                process.env.DB_DATABASE!,
+                process.env.DB_USER!,
+                process.env.DB_PASSWORD!,
+                {
+                    host: process.env.DB_HOST,
+                    port: Number(process.env.DB_PORT) || 1433,
+                    dialect: 'mssql', // Define o uso do SQL Server
+                    logging: false,    // Defina como console.log para ver as queries
+                    dialectOptions: {
+                        options: {
+                            encrypt: true, // Necessário para Azure/ambientes seguros
+                            trustServerCertificate: true, // Comum em dev local
+                            enableArithAbort: true
+                        }
+                    },
+                    pool: {
+                        max: 50,      // connectionLimit: 50
+                        min: 0,
+                        acquire: 30000,
+                        idle: 10000
+                    },
+                    timezone: '+00:00' // Equivalente ao 'Z' (UTC)
+                }
+            );
 
-export const poolPromise = new sql.ConnectionPool(config)
-    .connect()
-    .then(pool => {
-        console.log('✅ Conectado ao Microsoft SQL Server com sucesso!');
-        return pool;
-    })
-    .catch(err => {
-        console.error('❌ Erro ao criar Connection Pool:', err);
-        throw err;
-    });
+            console.log("✅ Conexão Sequelize (SQL Server) configurada com sucesso.");
+        } catch (error) {
+            console.error("❌ Erro ao configurar o Sequelize:", error);
+            throw error;
+        }
+    }
 
-// Exportamos também o objeto sql para usar os tipos (sql.Int, sql.VarChar, etc) nos Repositories
-export { sql };
+    public static getInstance(): Database {
+        if (!Database.instance) {
+            Database.instance = new Database();
+            Database.instance.connect();
+        }
+        return Database.instance;
+    }
+
+    public getSequelize(): Sequelize {
+        return this.sequelize;
+    }
+}
+
+// Exporta a instância do Sequelize pronta para uso nos Mappings
+export const sequelize = Database.getInstance().getSequelize();
