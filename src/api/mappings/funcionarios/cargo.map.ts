@@ -1,29 +1,23 @@
 import { DataTypes, Model, Optional } from 'sequelize';
 import { sequelize } from '../../configs/Database';
 import { enumNivelPermissao } from '../../enum/funcionarios/nivelPermissao.enum';
+import { ICargo } from '../../models/funcionarios/Cargo';
 
-interface CargoAttributes {
-    idCargo?: string;
-    nomeCargo: string;
-    descricao?: string;
-    nivelPermissao: enumNivelPermissao;
-}
+interface CargoCreationAttributes extends Optional<ICargo, 'idCargo' | 'dataCad' | 'dataMod'> {}
 
-// O id_cargo é opcional na criação pois o Sequelize/Banco irá gerar
-interface CargoCreationAttributes extends Optional<CargoAttributes, 'idCargo'> {}
-
-class CargoMap extends Model<CargoAttributes, CargoCreationAttributes> implements CargoAttributes {
-    public idCargo!: string;
+class CargoMap extends Model<ICargo, CargoCreationAttributes> implements ICargo {
+    public idCargo!: string | null; 
     public nomeCargo!: string;
-    public descricao?: string;
     public nivelPermissao!: enumNivelPermissao;
+    public dataCad?: string;
+    public dataMod?: string;
 }
 
 CargoMap.init(
     {
         idCargo: {
             type: DataTypes.UUID,
-            defaultValue: DataTypes.UUIDV4, // Gera o UUID automaticamente se não for enviado
+            defaultValue: DataTypes.UUIDV4,
             primaryKey: true,
             field: 'IdCargo'
         },
@@ -32,13 +26,8 @@ CargoMap.init(
             allowNull: false,
             field: 'NomeCargo'
         },
-        descricao: {
-            type: DataTypes.TEXT,
-            allowNull: true,
-            field: 'DescricaoCargo'
-        },
         nivelPermissao: {
-            type: DataTypes.ENUM('administrador','coordenador', 'funcionario','visitante'),
+            type: DataTypes.ENUM(...Object.values(enumNivelPermissao)),
             allowNull: false,
             field: 'NivelPermissao'
         }
@@ -48,9 +37,9 @@ CargoMap.init(
         tableName: 'TB_CARGOS',
         schema: 'dbo',
         timestamps: true,
-        createdAt: 'DataCad',
+        createdAt: 'DataCad', 
         updatedAt: 'DataMod'
     }
 );
 
-export { CargoMap, CargoAttributes };
+export { CargoMap };

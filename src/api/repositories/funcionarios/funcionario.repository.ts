@@ -1,7 +1,7 @@
 import { FuncionarioMap } from '../../mappings';
 import { CargoMap } from '../../mappings';
 import { TelefoneMap } from '../../mappings';
-import { FuncionarioAttributes } from '../../mappings/funcionarios/funcionario.map';
+import { IFuncionario } from '../../models/funcionarios/Funcionario';
 import { Op } from 'sequelize'; 
 
 
@@ -33,7 +33,7 @@ export class FuncionarioRepository {
         })
     }
 
-    async criarFuncionario(dados: FuncionarioAttributes) {
+    async criarFuncionario(dados: IFuncionario) {
         return await FuncionarioMap.create(dados);
     }
 

@@ -1,44 +1,42 @@
 import { DataTypes, Model, Optional } from 'sequelize';
 import { sequelize } from '../../configs/Database';
 import { enumTipoTelefone } from '../../enum/funcionarios/tipoTelefone';
+import { ITelefone } from '../../models/funcionarios/Telefone';
 
-interface TelefoneAttributes {
-    idTelefone?: string;
-    FK_idFuncionario: string;
-    numeroTelefone: string;
-    tipoTelefone: enumTipoTelefone;
-}
+interface TelefoneCreationAttributes extends Optional<ITelefone, 'idTelefone' | 'dataCad' | 'dataMod'> {}
 
-interface TelefoneCreationAttributes extends Optional<TelefoneAttributes, 'idTelefone'> {}
-
-class TelefoneMap extends Model<TelefoneAttributes, TelefoneCreationAttributes> implements TelefoneAttributes {
-    public idTelefone!: string;
+class TelefoneMap extends Model<ITelefone, TelefoneCreationAttributes> implements ITelefone {
+    public idTelefone!: string | null;
     public FK_idFuncionario!: string;
     public numeroTelefone!: string;
     public tipoTelefone!: enumTipoTelefone;
+
+    // Timestamps
+    public readonly dataCad!: string;
+    public readonly dataMod!: string;
 }
 
 TelefoneMap.init(
     {
         idTelefone: {
             type: DataTypes.UUID,
-            defaultValue: DataTypes.UUIDV4, // Gera o UUID automaticamente se não for enviado
+            defaultValue: DataTypes.UUIDV4,
             primaryKey: true,
-            field: 'IdCargo'
+            field: 'IdTelefone' 
         },
         FK_idFuncionario: {
             type: DataTypes.UUID,
             allowNull: false,
             field: 'FK_IdFuncionario',
-            references: {model: 'Funcionarios', key:'IdFuncionario'}
+            references: { model: 'TB_FUNCIONARIOS', key: 'IdFuncionario' }
         },
         numeroTelefone: {
-            type: DataTypes.STRING(13),
-            allowNull: true,
+            type: DataTypes.STRING(15), 
+            allowNull: false, 
             field: 'NumeroTelefone'
         },
         tipoTelefone: {
-            type: DataTypes.ENUM('fixo','movel', 'trabalho'),
+            type: DataTypes.ENUM(...Object.values(enumTipoTelefone)),
             allowNull: false,
             field: 'TipoTelefone'
         }
@@ -53,4 +51,4 @@ TelefoneMap.init(
     }
 );
 
-export { TelefoneMap, TelefoneAttributes };
+export { TelefoneMap };

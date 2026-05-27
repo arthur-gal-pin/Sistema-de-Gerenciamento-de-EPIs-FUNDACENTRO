@@ -1,13 +1,21 @@
 import { enumNivelPermissao } from "../../enum/funcionarios/nivelPermissao.enum";
 
+export interface ICargo {
+    idCargo: string | null; 
+    nomeCargo: string;
+    nivelPermissao: enumNivelPermissao;
+    dataCad?: string;
+    dataMod?: string;
+}
+
 export default class Cargo {
     private _idCargo: string | null; //UUID
     private _nomeCargo: string;
     private _nivelPermissao: enumNivelPermissao;
-    private _dataCad: string;
-    private _dataMod: string;
+    private _dataCad?: string ;
+    private _dataMod?: string;
 
-    constructor(idCargo: string | null, nomeCargo: string, nivelPermissao: enumNivelPermissao, dataCad: string, dataMod: string) {
+    constructor(idCargo: string | null, nomeCargo: string, nivelPermissao: enumNivelPermissao, dataCad?: string, dataMod?: string) {
         this._idCargo = idCargo || null;
         this._nomeCargo = nomeCargo;
         this._nivelPermissao = nivelPermissao;
@@ -41,7 +49,7 @@ export default class Cargo {
 
     // --- FACTORY METHODS ---
 
-    public static create(dados: any): Cargo {
+    public static create(dados: ICargo): Cargo {
 
         return new Cargo(
             dados.idCargo,
@@ -52,7 +60,7 @@ export default class Cargo {
         );
     }
 
-    public static edit(id: string, dados: any): Cargo {
+    public static edit(id: string, dados: ICargo): Cargo {
 
         return new Cargo(
             id,

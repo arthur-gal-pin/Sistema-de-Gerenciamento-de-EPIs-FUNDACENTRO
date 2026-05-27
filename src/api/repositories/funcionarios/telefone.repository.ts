@@ -1,5 +1,5 @@
 import { TelefoneMap } from "../../mappings";
-import { TelefoneAttributes } from "../../mappings/funcionarios/telefone.map";
+import { ITelefone } from "../../models/funcionarios/Telefone";
 
 export class TelefoneRepository {
     async buscarPorFuncionario(idFuncionario: string) {
@@ -8,7 +8,7 @@ export class TelefoneRepository {
         });
     }
 
-    async adicionarTelefone(dados: any) {
+    async adicionarTelefone(dados: ITelefone) {
         return await TelefoneMap.create(dados);
     }
 

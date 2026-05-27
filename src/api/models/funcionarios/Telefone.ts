@@ -1,19 +1,29 @@
 import { enumTipoTelefone } from "../../enum/funcionarios/tipoTelefone";
+
+export interface ITelefone {
+    idTelefone: string | null;
+    FK_idFuncionario: string;
+    numeroTelefone: string;
+    tipoTelefone: enumTipoTelefone;
+    dataCad?: string;
+    dataMod?: string;
+}
+
 export default class Telefone {
     private _idTelefone: string | null;
     private _idFuncionario: string;
     private _numeroTelefone: string;
     private _tipoNumero: enumTipoTelefone;
-    private _dataCad: string | null;
-    private _dataMod: string | null;
+    private _dataCad?: string | null;
+    private _dataMod?: string | null;
 
     constructor(
         idTelefone: string | null,
         idFuncionario: string,
         numeroTelefone: string,
         tipoNumero: enumTipoTelefone,
-        dataCad: string | null,
-        dataMod: string | null
+        dataCad?: string,
+        dataMod?: string
     ) {
         this._idTelefone = idTelefone || null;
         this._idFuncionario = idFuncionario;
@@ -55,23 +65,23 @@ export default class Telefone {
     }
 
     // --- FACTORY METHODS ---
-    public static create(dados: any): Telefone {
+    public static create(dados: ITelefone): Telefone {
         return new Telefone(
             dados.idTelefone,
-            dados.idFuncionario,
+            dados.FK_idFuncionario,
             dados.numeroTelefone,
-            dados.tipoNumero as enumTipoTelefone,
+            dados.tipoTelefone as enumTipoTelefone,
             dados.dataCad,
             dados.dataMod
         );
     }
 
-    public static edit(id: string, dados: any): Telefone {
+    public static edit(id: string, dados: ITelefone): Telefone {
         return new Telefone(
             id,
-            dados.idFuncionario,
+            dados.FK_idFuncionario,
             dados.numeroTelefone,
-            dados.tipoNumero as enumTipoTelefone,
+            dados.tipoTelefone as enumTipoTelefone,
             dados.dataCad,
             dados.dataMod
         );

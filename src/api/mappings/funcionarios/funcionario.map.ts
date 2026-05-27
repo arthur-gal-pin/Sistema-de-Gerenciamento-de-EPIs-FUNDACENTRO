@@ -1,50 +1,43 @@
 import { DataTypes, Model, Optional } from 'sequelize';
 import { sequelize } from '../../configs/Database';
 import { enumSituacaoEmpregaticia } from '../../enum/funcionarios/situacaoEmpregaticia'; 
+import { IFuncionario } from '../../models/funcionarios/Funcionario';
 
-interface FuncionarioAttributes {
-    idFuncionario?: string;
-    FK_IdCargo: string;
-    nomeFuncionario: string;
-    sobrenomeFuncionario?: string;
-    senhaHash: string;
-    cpf: string;
-    email: string;
-    vinculoImagem: string;
-    situacaoEmpregaticia: enumSituacaoEmpregaticia;
-}
+interface FuncionarioCreationAttributes extends Optional<IFuncionario, 'idFuncionario' | 'dataCad' | 'dataMod'> {}
 
-interface FuncionarioCreationAttributes extends Optional<FuncionarioAttributes, 'idFuncionario'> {}
-
-class FuncionarioMap extends Model<FuncionarioAttributes, FuncionarioCreationAttributes> implements FuncionarioAttributes {
-    public idFuncionario?: string;
-    public FK_IdCargo!: string;
+class FuncionarioMap extends Model<IFuncionario, FuncionarioCreationAttributes> implements IFuncionario {
+    public idFuncionario!: string | null;
+    public FK_idCargo!: string;
     public nomeFuncionario!: string;
-    public sobrenomeFuncionario?: string;
+    public sobrenomeFuncionario!: string;
     public senhaHash!: string;
     public cpf!: string;
     public email!: string;
-    public vinculoImagem!: string;
+    public caminhoImagemPerfil!: string; 
     public situacaoEmpregaticia!: enumSituacaoEmpregaticia;
+    
+    // Timestamps
+    public readonly dataCad!: string;
+    public readonly dataMod!: string;
 }
 
 FuncionarioMap.init(
     {
         idFuncionario: {
             type: DataTypes.UUID,
-            defaultValue: DataTypes.UUIDV4, // Gera o UUID automaticamente se não for enviado
+            defaultValue: DataTypes.UUIDV4,
             primaryKey: true,
             field: 'IdFuncionario'
         },
-        FK_IdCargo: {
+        FK_idCargo: { 
             type: DataTypes.UUID,
             allowNull: false,
             field: 'FK_IdCargo',
-            references: { model: 'Cargos', key: 'IdCargo' }
+            references: { model: 'CARGOS', key: 'IdCargo' }
         },
         nomeFuncionario: {
             type: DataTypes.STRING(30),
-            allowNull: true,
+            allowNull: false, 
             field: 'NomeFuncionario'
         },
         sobrenomeFuncionario: {
@@ -53,11 +46,11 @@ FuncionarioMap.init(
             field: 'SobrenomeFuncionario'
         },
         senhaHash: {
-            type: DataTypes.CHAR(60),
+            type: DataTypes.STRING(255),
             allowNull: false,
-            field: 'Senha'
+            field: 'SenhaHash'
         },
-        cpf:{
+        cpf: {
             type: DataTypes.CHAR(11),
             allowNull: false,
             unique: true,
@@ -69,13 +62,13 @@ FuncionarioMap.init(
             unique: true, 
             field: 'Email' 
         },
-        vinculoImagem: { 
+        caminhoImagemPerfil: { 
             type: DataTypes.STRING(255), 
             allowNull: true, 
             field: 'CaminhoImagemPerfil' 
         },
         situacaoEmpregaticia: { 
-            type: DataTypes.ENUM('Ativo', 'Inativo', 'Afastado'), 
+            type: DataTypes.ENUM(...Object.values(enumSituacaoEmpregaticia)), 
             allowNull: false,
             field: 'SituacaoEmpregaticia'
         }
@@ -90,4 +83,4 @@ FuncionarioMap.init(
     }
 );
 
-export { FuncionarioMap, FuncionarioAttributes };
+export { FuncionarioMap };

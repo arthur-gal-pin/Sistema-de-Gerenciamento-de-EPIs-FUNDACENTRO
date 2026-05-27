@@ -1,16 +1,31 @@
 import { enumSituacaoEmpregaticia } from "../../enum/funcionarios/situacaoEmpregaticia";
 
+export interface IFuncionario {
+    idFuncionario: string | null;
+    FK_idCargo: string;
+    nomeFuncionario: string;
+    sobrenomeFuncionario: string;
+    cpf: string;
+    email: string;
+    senhaHash: string;
+    caminhoImagemPerfil: string;
+    situacaoEmpregaticia: enumSituacaoEmpregaticia;
+    dataCad?: string;
+    dataMod?: string;
+}
+
 export default class Funcionario {
     private _idFuncionario: string | null;
     private _idCargo: string;
     private _nomeFuncionario: string;
     private _sobrenomeFuncionario: string;
     private _cpf: string;
+    private _email: string;
     private _senhaHash: string;
     private _caminhoImagemPerfil: string;
     private _situacaoEmpregaticia: enumSituacaoEmpregaticia;
-    private _dataCad: string | null;
-    private _dataMod: string | null;
+    private _dataCad: string;
+    private _dataMod: string;
 
     constructor(
         idFuncionario: string | null,
@@ -18,17 +33,19 @@ export default class Funcionario {
         nomeFuncionario: string,
         sobrenomeFuncionario: string,
         cpf: string,
+        email:string,
         senhaHash: string,
         caminhoImagemPerfil: string,
         situacaoEmpregaticia: enumSituacaoEmpregaticia,
-        dataCad: string | null,
-        dataMod: string | null
+        dataCad?: string,
+        dataMod?: string
     ) {
         this._idFuncionario = idFuncionario || null;
         this._idCargo = idCargo;
         this._nomeFuncionario = nomeFuncionario;
         this._sobrenomeFuncionario = sobrenomeFuncionario;
         this._cpf = cpf;
+        this._email = email;
         this._senhaHash = senhaHash;
         this._caminhoImagemPerfil = caminhoImagemPerfil;
         this._situacaoEmpregaticia = situacaoEmpregaticia;
@@ -42,6 +59,7 @@ export default class Funcionario {
     get nomeFuncionario() { return this._nomeFuncionario; }
     get sobrenomeFuncionario() { return this._sobrenomeFuncionario; }
     get cpf() { return this._cpf; }
+    get email() {return this._email;}
     get senhaHash() { return this._senhaHash; }
     get caminhoImagemPerfil() { return this._caminhoImagemPerfil; }
     get situacaoEmpregaticia() { return this._situacaoEmpregaticia; }
@@ -66,6 +84,11 @@ export default class Funcionario {
         this._cpf = valor;
     }
 
+    set email(valor: string) {
+        this.validarEmail(valor);
+        this._email = valor;
+    }
+
     set senhaHash(hash: string) { this._senhaHash = hash; }
 
     set caminhoImagemPerfil(caminho: string) { this._caminhoImagemPerfil = caminho; }
@@ -88,14 +111,22 @@ export default class Funcionario {
         }
     }
 
+    private validarEmail(email: string){
+        const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!regexEmail.test(email)) {
+            throw new Error('O email inserido é inválido.');
+        }
+    }
+
     // --- FACTORY METHODS ---
-    public static create(dados: any): Funcionario {
+    public static create(dados: IFuncionario): Funcionario {
         return new Funcionario(
             dados.idFuncionario,
-            dados.idCargo,
+            dados.FK_idCargo,
             dados.nomeFuncionario,
             dados.sobrenomeFuncionario,
             dados.cpf,
+            dados.email,
             dados.senhaHash,
             dados.caminhoImagemPerfil,
             dados.situacaoEmpregaticia as enumSituacaoEmpregaticia,
@@ -104,13 +135,14 @@ export default class Funcionario {
         );
     }
 
-    public static edit(id: string, dados: any): Funcionario {
+    public static edit(id: string, dados: IFuncionario): Funcionario {
         return new Funcionario(
             id,
-            dados.idCargo,
+            dados.FK_idCargo,
             dados.nomeFuncionario,
             dados.sobrenomeFuncionario,
             dados.cpf,
+            dados.email,
             dados.senhaHash,
             dados.caminhoImagemPerfil,
             dados.situacaoEmpregaticia as enumSituacaoEmpregaticia,
@@ -126,6 +158,7 @@ export default class Funcionario {
             nomeFuncionario: this._nomeFuncionario,
             sobrenomeFuncionario: this._sobrenomeFuncionario,
             cpf: this._cpf,
+            emai: this._email,
             senhaHash: this._senhaHash,
             caminhoImagemPerfil: this._caminhoImagemPerfil,
             situacaoEmpregaticia: this._situacaoEmpregaticia,
