@@ -1,4 +1,5 @@
 export enum enumSituacaoEmpregaticia{
     ativo = 'ativo',
-    desligado = 'desligado'
+    inativo = 'inativo',
+    afastado = 'afastado'
 } 
