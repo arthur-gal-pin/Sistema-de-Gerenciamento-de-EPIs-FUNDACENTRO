@@ -8,7 +8,7 @@ import { Op } from 'sequelize';
 export class FuncionarioRepository {
     
     // Busca funcionário trazendo os dados do Cargo e a lista de Telefones (Eager Loading)
-    async buscarCompletoPorId(id: string) {
+    static async buscarCompletoPorId(id: string) {
         return await FuncionarioMap.findByPk(id, {
             include: [
                 { model: CargoMap, as: 'cargo' },
@@ -17,33 +17,37 @@ export class FuncionarioRepository {
         });
     }
 
-    async listarTodos() {
+    static async listarTodos() {
         return await FuncionarioMap.findAll({
             include: [{ model: CargoMap, as: 'cargo' }]
         });
     }
 
-    async buscarPorNome(nome: string) {
+    static async listarPorNome(nome: string) {
         return await FuncionarioMap.findAll({
             where: {
                 nomeFuncionario: {
                     [Op.like]: `%${nome}%`
                 }
             }
-        })
+        });
     }
 
-    async criarFuncionario(dados: IFuncionario) {
+    static async listarPorId(id: string) {
+        return await FuncionarioMap.findByPk(id);
+    }
+
+    static async criarFuncionario(dados: IFuncionario) {
         return await FuncionarioMap.create(dados);
     }
 
-    async atualizarFuncionario(id: string, dados: any) {
+    static async atualizarFuncionario(id: string, dados: any) {
         return await FuncionarioMap.update(dados, {
             where: { idFuncionario: id }
         });
     }
 
-    async apagarFuncionario(id: string) {
+    static async apagarFuncionario(id: string) {
         return await FuncionarioMap.destroy({
             where: { idFuncionario: id }
         });

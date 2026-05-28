@@ -2,19 +2,29 @@ import { TelefoneMap } from "../../mappings";
 import { ITelefone } from "../../models/funcionarios/Telefone";
 
 export class TelefoneRepository {
-    async buscarPorFuncionario(idFuncionario: string) {
+    static async listarPorFuncionario(idFuncionario: string) {
         return await TelefoneMap.findAll({
             where: { FK_idFuncionario: idFuncionario }
         });
     }
 
-    async adicionarTelefone(dados: ITelefone) {
+    static async adicionarTelefone(dados: ITelefone) {
         return await TelefoneMap.create(dados);
     }
 
-    async removerTelefone(idTelefone: string) {
+    static async removerTelefone(idTelefone: string) {
         return await TelefoneMap.destroy({
             where: { idTelefone: idTelefone }
         });
+    }
+
+    static async atualizar(id: string, dados: ITelefone) {
+        return await TelefoneMap.update(dados, {
+            where: { idTelefone: id }
+        });
+    }
+
+    static async buscarPorId(id: string) {
+        return await TelefoneMap.findByPk(id);
     }
 }

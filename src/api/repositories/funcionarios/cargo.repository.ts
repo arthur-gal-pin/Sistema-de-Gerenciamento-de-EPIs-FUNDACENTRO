@@ -3,19 +3,19 @@ import { Op } from 'sequelize';
 import { ICargo } from "../../models/funcionarios/Cargo";
 
 export class CargoRepository {
-    async listarTodos() {
+    static async listarTodos() {
         return await CargoMap.findAll();
     }
 
-    async buscarPorId(id: string) {
+    static async listarPorId(id: string) {
         return await CargoMap.findByPk(id);
     };
 
-    async criar(dados: ICargo) {
+    static async criar(dados: ICargo) {
         return await CargoMap.create(dados);
     };
 
-    async buscarPorNome(nome: string){
+    static async buscarPorNome(nome: string){
         return await CargoMap.findAll({
             where: {
                 nomeCargo: {
@@ -25,7 +25,13 @@ export class CargoRepository {
         })
     };
 
-    async removerCargo(id: string) {
+    static async atualizar(id: string, dados: ICargo) {
+        return await CargoMap.update(dados, {
+            where: { idCargo: id }
+        });
+    }
+
+    static async removerCargo(id: string) {
         return await CargoMap.destroy({
             where: {
                 idCargo: id 

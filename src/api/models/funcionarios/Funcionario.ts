@@ -75,7 +75,7 @@ export default class Funcionario {
     }
 
     set sobrenomeFuncionario(sobrenome: string) {
-        this.validarTexto(sobrenome, "Sobrenome", 2, 50);
+        this.validarTexto(sobrenome, "Sobrenome", 2, 200);
         this._sobrenomeFuncionario = sobrenome;
     }
 
@@ -105,7 +105,6 @@ export default class Funcionario {
     }
 
     private validarCpf(cpf: string) {
-        // Validação básica de comprimento para o exemplo
         if (cpf.replace(/\D/g, '').length !== 11) {
             throw new Error('O CPF deve conter 11 dígitos numéricos.');
         }
@@ -154,11 +153,11 @@ export default class Funcionario {
     public toJSON() {
         return {
             idFuncionario: this._idFuncionario,
-            idCargo: this._idCargo,
+            FK_idCargo: this._idCargo,
             nomeFuncionario: this._nomeFuncionario,
             sobrenomeFuncionario: this._sobrenomeFuncionario,
             cpf: this._cpf,
-            emai: this._email,
+            email: this._email,
             senhaHash: this._senhaHash,
             caminhoImagemPerfil: this._caminhoImagemPerfil,
             situacaoEmpregaticia: this._situacaoEmpregaticia,
