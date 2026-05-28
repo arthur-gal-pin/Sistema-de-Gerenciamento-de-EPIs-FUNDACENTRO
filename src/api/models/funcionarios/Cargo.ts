@@ -1,18 +1,18 @@
 import { enumNivelPermissao } from "../../enum/funcionarios/nivelPermissao";
 
-export class Cargo {
+export default class Cargo {
     private _idCargo: string | null; //UUID
     private _nomeCargo: string;
     private _nivelPermissao: enumNivelPermissao;
-    private _dataCad: string | null;
-    private _dataMod: string | null;
+    private _dataCad: string;
+    private _dataMod: string;
 
     constructor(idCargo: string | null, nomeCargo: string, nivelPermissao: enumNivelPermissao, dataCad: string, dataMod: string) {
         this._idCargo = idCargo || null;
         this._nomeCargo = nomeCargo;
         this._nivelPermissao = nivelPermissao;
-        this._dataCad = dataCad || null;
-        this._dataMod = dataMod || null;
+        this._dataCad = dataCad || new Date().toISOString();
+        this._dataMod = dataMod || new Date().toISOString();
     }
 
     // --- GETTERS ---

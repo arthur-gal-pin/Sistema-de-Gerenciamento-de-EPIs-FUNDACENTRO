@@ -1,5 +1,4 @@
 import { enumTipoTelefone } from "../../enum/funcionarios/tipoTelefone";
-
 export default class Telefone {
     private _idTelefone: string | null;
     private _idFuncionario: string;
@@ -20,8 +19,8 @@ export default class Telefone {
         this._idFuncionario = idFuncionario;
         this._numeroTelefone = numeroTelefone;
         this._tipoNumero = tipoNumero;
-        this._dataCad = dataCad || null;
-        this._dataMod = dataMod || null;
+        this._dataCad = dataCad || new Date().toISOString();
+        this._dataMod = dataMod || new Date().toISOString();
     }
 
     // --- GETTERS ---
