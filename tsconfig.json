@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "ES2023",
     "module": "commonjs",
-    "moduleResolution":"node",
+    "moduleResolution": "node",
     "lib": ["ES2023"],
     "esModuleInterop": true,
     "strict": true,
@@ -10,8 +10,11 @@
     "types": ["node", "express"],
     "outDir": "./dist",
     "rootDir": "./src",
-    "sourceMap": true,
-    "ignoreDeprecations": "6.0"
+    "sourceMap": true
   },
-  "include": ["src/api"]
+  "include": ["src/**/*"],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
 }
