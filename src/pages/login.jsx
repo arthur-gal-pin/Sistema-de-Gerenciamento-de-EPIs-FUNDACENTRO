@@ -1,10 +1,11 @@
 import { useState } from "react";
 import axios from "axios";
-import "./login.css";
+import PersonModal from "../components/modals/PersonModal";
 
 export default function Login() {
   const [cpf, setCpf] = useState("");
   const [senha, setSenha] = useState("");
+  const [isRegisterOpen, setIsRegisterOpen] = useState(false);
 
   function formatarCPF(valor) {
     valor = valor.replace(/\D/g, "");
@@ -26,10 +27,7 @@ export default function Login() {
       console.log(response.data);
       alert("Login realizado com sucesso!");
 
-      // Exemplo:
-      // localStorage.setItem("token", response.data.token);
-      // navigate("/home");
-
+  
     } catch (error) {
       console.error(error);
       alert("CPF ou senha inválidos.");
@@ -50,7 +48,7 @@ export default function Login() {
 
             <div className="text-center mb-4">
               <img
-                src="/fundacentro.png"
+                src="./fundacentro.png"
                 alt="Fundacentro"
                 className="logo img-fluid"
               />
@@ -91,15 +89,24 @@ export default function Login() {
 
               <button
                 type="submit"
-                className="btn btn-success w-100"
+                className="btn btn-success w-100 mb-3"
               >
                 Entrar
               </button>
 
             </form>
 
-            <div className="text-center mt-3">
-              <a href="#">Esqueci minha senha</a>
+            {/* Ações adicionais: Cadastro e Esqueci a Senha */}
+            <div className="text-center mt-3 d-flex flex-column gap-2">
+              <button 
+                type="button" 
+                className="btn btn-outline-primary w-100"
+                onClick={() => setIsRegisterOpen(true)}
+              >
+                Criar uma conta
+              </button>
+
+              <a href="#" className="mt-2">Esqueci minha senha</a>
             </div>
 
           </div>
@@ -110,6 +117,16 @@ export default function Login() {
         <div className="col-lg-3 d-none d-lg-block direita"></div>
 
       </div>
+
+      {/* Modal para cadastro de novos usuários */}
+      <PersonModal
+        isOpen={isRegisterOpen}
+        onClose={() => setIsRegisterOpen(false)}
+        person={null}
+        onSuccess={() => {
+          alert("Cadastro realizado com sucesso! Faça seu login.");
+        }}
+      />
     </div>
   );
 }

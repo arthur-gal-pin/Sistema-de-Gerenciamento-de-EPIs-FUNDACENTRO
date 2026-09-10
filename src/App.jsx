@@ -1,7 +1,8 @@
-import { Navigate, Route, Routes } from "react-router-dom"
-import Login from "../pages/login"
-import Home from "./pages/Home"
-import Amostras from "./pages/Amostras"
+import { Navigate, Route, Routes } from "react-router-dom";
+import Login from "./pages/login";
+import Home from "./pages/Home";
+import Amostras from "./pages/Amostras";
+
 
 export default function App() {
 
