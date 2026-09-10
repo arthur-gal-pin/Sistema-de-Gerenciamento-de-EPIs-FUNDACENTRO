@@ -1,4 +1,8 @@
 import axios from "axios";
+<<<<<<< HEAD
+=======
+import api_jsonfake from './api.js'; 
+>>>>>>> feat/pagina-perfil-pivo
 
 const TOKEN = "asl";
 

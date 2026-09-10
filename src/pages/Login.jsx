@@ -1,10 +1,18 @@
 import { useState } from "react";
 import axios from "axios";
+<<<<<<< HEAD
 import "./login.css";
+=======
+import PersonModal from "../components/modals/PersonModal";
+>>>>>>> feat/pagina-perfil-pivo
 
 export default function Login() {
   const [cpf, setCpf] = useState("");
   const [senha, setSenha] = useState("");
+<<<<<<< HEAD
+=======
+  const [isRegisterOpen, setIsRegisterOpen] = useState(false);
+>>>>>>> feat/pagina-perfil-pivo
 
   function formatarCPF(valor) {
     valor = valor.replace(/\D/g, "");
@@ -26,10 +34,14 @@ export default function Login() {
       console.log(response.data);
       alert("Login realizado com sucesso!");
 
+<<<<<<< HEAD
       // Exemplo:
       // localStorage.setItem("token", response.data.token);
       // navigate("/home");
 
+=======
+  
+>>>>>>> feat/pagina-perfil-pivo
     } catch (error) {
       console.error(error);
       alert("CPF ou senha inválidos.");
@@ -50,7 +62,11 @@ export default function Login() {
 
             <div className="text-center mb-4">
               <img
+<<<<<<< HEAD
                 src="/fundacentro.png"
+=======
+                src="./fundacentro.png"
+>>>>>>> feat/pagina-perfil-pivo
                 alt="Fundacentro"
                 className="logo img-fluid"
               />
@@ -91,15 +107,33 @@ export default function Login() {
 
               <button
                 type="submit"
+<<<<<<< HEAD
                 className="btn btn-success w-100"
+=======
+                className="btn btn-success w-100 mb-3"
+>>>>>>> feat/pagina-perfil-pivo
               >
                 Entrar
               </button>
 
             </form>
 
+<<<<<<< HEAD
             <div className="text-center mt-3">
               <a href="#">Esqueci minha senha</a>
+=======
+            {/* Ações adicionais: Cadastro e Esqueci a Senha */}
+            <div className="text-center mt-3 d-flex flex-column gap-2">
+              <button 
+                type="button" 
+                className="btn btn-outline-primary w-100"
+                onClick={() => setIsRegisterOpen(true)}
+              >
+                Criar uma conta
+              </button>
+
+              <a href="#" className="mt-2">Esqueci minha senha</a>
+>>>>>>> feat/pagina-perfil-pivo
             </div>
 
           </div>
@@ -110,6 +144,19 @@ export default function Login() {
         <div className="col-lg-3 d-none d-lg-block direita"></div>
 
       </div>
+<<<<<<< HEAD
+=======
+
+      {/* Modal para cadastro de novos usuários */}
+      <PersonModal
+        isOpen={isRegisterOpen}
+        onClose={() => setIsRegisterOpen(false)}
+        person={null}
+        onSuccess={() => {
+          alert("Cadastro realizado com sucesso! Faça seu login.");
+        }}
+      />
+>>>>>>> feat/pagina-perfil-pivo
     </div>
   );
 }
